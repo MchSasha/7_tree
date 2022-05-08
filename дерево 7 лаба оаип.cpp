@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include <vector>
 #include <ctime>
-
+#include<map>
 using namespace std;
 
 struct arr {
@@ -37,10 +37,6 @@ void add_leaf(tree*& root, int key_n, string key_f, vector<arr>&list) {
             else t = t->right;
     }
     if (find) {
-        /*if ()
-        arr temp;
-        temp.fio = key_f; temp.num = key_n;
-        list.push_back(temp);*/
         t = leaf(key_n, key_f); 
         if (key_n < anc->num) anc->left = t;
         else anc->right = t;
@@ -200,26 +196,7 @@ tree* max_left_r(tree* key, tree*& root) {
     return t;
 }
 //
-tree* min_right(tree * key, tree*& root) {
-   tree* ancc = new tree;
-    t = key;
-    ancc = t;
-    t = t->right;
-    while (t->left) {
-        ancc = t;
-        t = t->left;
-    }
-    if (t->right)
-    ancc->left = t->right;
-    else ancc->left = NULL;
 
-    t->left = key->left;
-    if (t == key->left)
-        t->left = NULL;
-
-    t->right = key->right;
-    return t;
-}
 
 void rootlr(tree* root)
 {
@@ -228,7 +205,7 @@ void rootlr(tree* root)
         return;
     }
     
-    cout << root->num << " ";
+    cout << root->num << " " << '(' << root->fio << ')' << '\n';
     rootlr(root->left);   //рекурсивный вызов левого поддерева
     rootlr(root->right);  //рекурсивный вызов правого поддерева
 }
@@ -239,7 +216,7 @@ void lrootr(tree* root)
         return;
     }
     lrootr(root->left);   //рекурсивный вызов левого поддерева
-    cout << root->num << " ";
+    cout << root->num << " " << '(' << root->fio << ')' << '\n';
     lrootr(root->right);  //рекурсивный вызов правого поддерева
 }
 void lrroot(tree* root) {
@@ -249,7 +226,15 @@ void lrroot(tree* root) {
     }
     lrroot(root->left);
     lrroot(root->right);
-    cout << root->num<<" ";
+    cout << root->num << " " << '(' << root->fio << ')' << '\n';
+}
+
+void task(tree* root, map<int, int>& numb, int lvl)
+{
+    if (!root->left && !root->right) numb[lvl]++;
+    ///else numb[lvl] = 0;
+    if (root->left)  task(root->left, numb, lvl + 1);
+    if (root->right) task(root->right, numb, lvl + 1);
 }
 
 int menu() {
@@ -266,75 +251,19 @@ int menu() {
         << "8. Show the tree Root-Left-Right\n"
         << "9. Show the tree Left-Root-Right\n"
         << "10. Show the tree Left-Right-Root\n"
-        << "////. Task" << '\n';
+        << "11. Task" << '\n';
     int n;
     cin >> n;
     return n;
 }
 
-void del(int key, tree *& root, int n) {
-    bool l = 0; bool r = 0;
-    t = root;
-    while (t) {
-        if (t->num == key) {
-            if (n == 1) {                               ///leaf
-                if (anc->left && anc->left->num == key)
-                    anc->left = NULL;
-                else anc->right = NULL;
-            }
-            if (n == 2) {  /// 1/2 leaf
-                /// 
-                if (key == root->num)
-                {
-                    if (root->right)
-                        root = root->right;
-                    else root = root->left;
-                    break;// return;
-                }
-                ///root-1/2 leaf
-
-                if (anc->left && t->left && anc->left->num == key)
-                    anc->left = t->left;
-                if (anc->right && t->left && anc->right->num == key)
-                    anc->right = t->left;
-                if (anc->left && t->right && anc->left->num == key)
-                    anc->left = t->right;
-                if (anc->right && t->right && anc->right->num == key)
-                    anc->right = t->right;
-                return;
-            }
-
-            if (n == 3) {
-                if (r)
-                    anc->right = min_right(t, root);
-                if (l)
-                    anc->left = max_left(t, root);
-                if (key == root->num)
-                    root = max_left(t, root);
-                break;// return;
-
-            }
-        }
-        r = 0; l = 0;
-        anc = t;
-        if (key < t->num) {
-            t = t->left;
-            l++;
-        }
-        else {
-            t = t->right;
-            r++;
-        }
-    }
-    return;
-}
 
 int main()
 {
     srand(time(NULL));
     vector <arr> list{};
-    int n; string f; bool l = 0; bool r = 0;
-    
+    int n; string f; bool l = 0; bool r = 0; map<int, int> m;
+
     while (true) {
         switch (menu()) {
         case 1:
@@ -476,6 +405,19 @@ int main()
             }
             lrroot(root);
             cout << '\n'; break;
+        case 11: 
+            cout << "...COUNTING THE NUMBER OF LEIVES...\n";
+            if (!root) {
+                cout << "There is no tree!\n";
+                break;
+            }
+            task(root, m, 0);
+            for (int i : m)
+            {
+                cout << i.first << " : " << i.second << "\n";
+            }
+            cout << "\n"; break;
+
         case 0: 
             cout << "...EXIT...\n";
             return 0;
