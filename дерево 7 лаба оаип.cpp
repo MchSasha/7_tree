@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 #include <vector>
 #include <ctime>
-#include<map>
+#include <map>
 using namespace std;
 
 struct arr {
@@ -232,7 +232,7 @@ void lrroot(tree* root) {
 void task(tree* root, map<int, int>& numb, int lvl)
 {
     if (!root->left && !root->right) numb[lvl]++;
-    ///else numb[lvl] = 0;
+    else numb[lvl] = 0;
     if (root->left)  task(root->left, numb, lvl + 1);
     if (root->right) task(root->right, numb, lvl + 1);
 }
@@ -412,7 +412,7 @@ int main()
                 break;
             }
             task(root, numb, 0);
-            for (int i : numb)
+            for (auto i : numb)
             {
                 cout << i.first << " : " << i.second << "\n";
             }
