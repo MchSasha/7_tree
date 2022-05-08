@@ -262,7 +262,7 @@ int main()
 {
     srand(time(NULL));
     vector <arr> list{};
-    int n; string f; bool l = 0; bool r = 0; map<int, int> m;
+    int n; string f; bool l = 0; bool r = 0; map<int, int> numb;
 
     while (true) {
         switch (menu()) {
@@ -411,11 +411,12 @@ int main()
                 cout << "There is no tree!\n";
                 break;
             }
-            task(root, m, 0);
-            for (int i : m)
+            task(root, numb, 0);
+            for (int i : numb)
             {
                 cout << i.first << " : " << i.second << "\n";
             }
+            numb.clear();
             cout << "\n"; break;
 
         case 0: 
