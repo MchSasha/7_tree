@@ -84,6 +84,7 @@ void show(tree* root, int level) {
 }
 
 void balance(tree*& root, vector <arr>& list, int level) {
+
     int step = list.size() / 4;
     root = leaf(list[list.size() / 2].num, list[list.size() / 2].fio);
     list[list.size() / 2].num = 0;
@@ -148,6 +149,8 @@ tree* max_left(tree* key, tree*& root) {
 
 void rootlr(tree* root)
 {
+    if (!root)
+        return;
     cout << root->num << " " << '(' << root->fio << ')' << '\n';
     rootlr(root->left);   //рекурсивный вызов левого поддерева
     rootlr(root->right);  //рекурсивный вызов правого поддерева
@@ -155,11 +158,15 @@ void rootlr(tree* root)
 
 void lrootr(tree* root)
 {
+    if (!root)
+        return;
     lrootr(root->left);   //рекурсивный вызов левого поддерева
     cout << root->num << " " << '(' << root->fio << ')' << '\n';
     lrootr(root->right);  //рекурсивный вызов правого поддерева
 }
 void to_rr(tree* root, vector <arr>& list) {
+    if (!root)
+        return;
     to_rr(root->left, list);   //рекурсивный вызов левого поддерева
     arr temp;
     temp.num = root->num;
@@ -168,6 +175,8 @@ void to_rr(tree* root, vector <arr>& list) {
     to_rr(root->right, list);
 }
 void lrroot(tree* root) {
+    if (!root)
+        return;
     lrroot(root->left);
     lrroot(root->right);
     cout << root->num << " " << '(' << root->fio << ')' << '\n';
